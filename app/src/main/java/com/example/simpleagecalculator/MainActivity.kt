@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.SimpleAgeCalculator.R
+import com.example.simpleagecalculator.model.AgeCalculatorModel
 import java.util.*
 
 class MainActivity : ComponentActivity() {
