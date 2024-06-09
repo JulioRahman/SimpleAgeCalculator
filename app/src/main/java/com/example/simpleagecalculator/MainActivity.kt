@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.example.SimpleAgeCalculator.R
-import com.example.simpleagecalculator.model.AgeCalculatorModel
+import com.example.simpleagecalculator.model.Age
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -86,7 +86,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun calculateAgeDifference(todayDate: String, dateOfBirth: String): AgeCalculatorModel {
+    private fun calculateAgeDifference(todayDate: String, dateOfBirth: String): Age {
         val today = Calendar.getInstance()
         val birthDate = Calendar.getInstance()
 
@@ -110,10 +110,10 @@ class MainActivity : ComponentActivity() {
             months += 12
         }
 
-        return AgeCalculatorModel(years, months, days)
+        return Age(years, months, days)
     }
 
-    private fun displayAge(age: AgeCalculatorModel) {
+    private fun displayAge(age: Age) {
         tvYears.text = age.years.toString()
         tvMonths.text = age.months.toString()
         tvDays.text = age.days.toString()
