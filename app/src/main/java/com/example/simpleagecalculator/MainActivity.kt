@@ -11,17 +11,26 @@ import com.example.simpleagecalculator.model.AgeCalculatorModel
 import java.util.*
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var etTodayDate: EditText
+    private lateinit var etDateOfBirth: EditText
+    private lateinit var btnClear: Button
+    private lateinit var btnCalculate: Button
+    private lateinit var tvYears: TextView
+    private lateinit var tvMonths: TextView
+    private lateinit var tvDays: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val etTodayDate: EditText = findViewById(R.id.etTodayDate)
-        val etDateOfBirth: EditText = findViewById(R.id.etDateOfBirth)
-        val btnClear: Button = findViewById(R.id.btnClear)
-        val btnCalculate: Button = findViewById(R.id.btnCalculate)
-        val tvYears: TextView = findViewById(R.id.tvYears)
-        val tvMonths: TextView = findViewById(R.id.tvMonths)
-        val tvDays: TextView = findViewById(R.id.tvDays)
+        etTodayDate = findViewById(R.id.etTodayDate)
+        etDateOfBirth = findViewById(R.id.etDateOfBirth)
+        btnClear = findViewById(R.id.btnClear)
+        btnCalculate = findViewById(R.id.btnCalculate)
+        tvYears = findViewById(R.id.tvYears)
+        tvMonths = findViewById(R.id.tvMonths)
+        tvDays = findViewById(R.id.tvDays)
 
         etTodayDate.setOnClickListener {
             showDatePicker(etTodayDate)
@@ -32,11 +41,11 @@ class MainActivity : ComponentActivity() {
         }
 
         btnClear.setOnClickListener {
-            clearFields(etTodayDate, etDateOfBirth, tvYears, tvMonths, tvDays)
+            clearFields()
         }
 
         btnCalculate.setOnClickListener {
-            calculateAge(etTodayDate, etDateOfBirth, tvYears, tvMonths, tvDays)
+            calculateAge()
         }
     }
 
@@ -59,7 +68,7 @@ class MainActivity : ComponentActivity() {
         datePickerDialog.show()
     }
 
-    private fun clearFields(etTodayDate: EditText, etDateOfBirth: EditText, tvYears: TextView, tvMonths: TextView, tvDays: TextView) {
+    private fun clearFields() {
         etTodayDate.text.clear()
         etDateOfBirth.text.clear()
         tvYears.text = "0"
@@ -67,13 +76,13 @@ class MainActivity : ComponentActivity() {
         tvDays.text = "0"
     }
 
-    private fun calculateAge(etTodayDate: EditText, etDateOfBirth: EditText, tvYears: TextView, tvMonths: TextView, tvDays: TextView) {
+    private fun calculateAge() {
         val todayDate = etTodayDate.text.toString()
         val dateOfBirth = etDateOfBirth.text.toString()
 
         if (todayDate.isNotEmpty() && dateOfBirth.isNotEmpty()) {
             val age = calculateAgeDifference(todayDate, dateOfBirth)
-            displayAge(age, tvYears, tvMonths, tvDays)
+            displayAge(age)
         }
     }
 
@@ -104,7 +113,7 @@ class MainActivity : ComponentActivity() {
         return AgeCalculatorModel(years, months, days)
     }
 
-    private fun displayAge(age: AgeCalculatorModel, tvYears: TextView, tvMonths: TextView, tvDays: TextView) {
+    private fun displayAge(age: AgeCalculatorModel) {
         tvYears.text = age.years.toString()
         tvMonths.text = age.months.toString()
         tvDays.text = age.days.toString()
