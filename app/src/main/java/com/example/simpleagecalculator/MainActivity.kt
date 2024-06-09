@@ -6,11 +6,15 @@ import android.app.DatePickerDialog
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.viewModels
 import com.example.SimpleAgeCalculator.R
 import com.example.simpleagecalculator.model.Age
+import com.example.simpleagecalculator.viewmodel.AgeViewModel
 import java.util.*
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: AgeViewModel by viewModels()
 
     private lateinit var etTodayDate: EditText
     private lateinit var etDateOfBirth: EditText
@@ -47,6 +51,8 @@ class MainActivity : ComponentActivity() {
         btnCalculate.setOnClickListener {
             calculateAge()
         }
+
+        observeAge()
     }
 
     private fun showDatePicker(editText: EditText) {
@@ -81,36 +87,14 @@ class MainActivity : ComponentActivity() {
         val dateOfBirth = etDateOfBirth.text.toString()
 
         if (todayDate.isNotEmpty() && dateOfBirth.isNotEmpty()) {
-            val age = calculateAgeDifference(todayDate, dateOfBirth)
-            displayAge(age)
+            viewModel.calculateAge(todayDate, dateOfBirth)
         }
     }
 
-    private fun calculateAgeDifference(todayDate: String, dateOfBirth: String): Age {
-        val today = Calendar.getInstance()
-        val birthDate = Calendar.getInstance()
-
-        val todayParts = todayDate.split("/")
-        val birthParts = dateOfBirth.split("/")
-
-        today.set(todayParts[2].toInt(), todayParts[1].toInt() - 1, todayParts[0].toInt())
-        birthDate.set(birthParts[2].toInt(), birthParts[1].toInt() - 1, birthParts[0].toInt())
-
-        var years = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR)
-        var months = today.get(Calendar.MONTH) - birthDate.get(Calendar.MONTH)
-        var days = today.get(Calendar.DAY_OF_MONTH) - birthDate.get(Calendar.DAY_OF_MONTH)
-
-        if (days < 0) {
-            months--
-            days += today.getActualMaximum(Calendar.DAY_OF_MONTH)
+    private fun observeAge() {
+        viewModel.age.observe(this) { age ->
+            displayAge(age)
         }
-
-        if (months < 0) {
-            years--
-            months += 12
-        }
-
-        return Age(years, months, days)
     }
 
     private fun displayAge(age: Age) {
